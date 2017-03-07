@@ -1,3 +1,4 @@
+import h from 'virtual-dom/h';
 import createElement from 'virtual-dom/create-element';
 
 import CustomNode from './custom-node';
@@ -80,6 +81,11 @@ export function vdomToDocument(vdom, payload) {
 	}
 
 	document.appendChild(childNode);
+	attachEventListeners(document);
+	return document;
+}
+
+export function attachEventListeners(document) {
 	eventsList.forEach(eventName => {
 		document.addEventListener(eventName, createEventHandler(handlers[eventName]))
 	});
@@ -93,27 +99,33 @@ export function createEmptyDocument() {
 		.createDocument();
 
 	document.extra = {};
+	document.vtree = h('document', {tvml: true});
+	document.rootNode = createElement(document.vtree, {document});
 
 	for (let i = document.childNodes.length; i; i--) {
 		document.removeChild(document.childNodes.item(i - 1));
 	}
 
+	document.appendChild(document.rootNode);
 	return document;
 }
 
 function createEventHandler(handlersCollection = {}) {
 	return function(event, ...args) {
-		let {target} = event;
-		let {tagName} = target;
-		let handler = handlersCollection[tagName] || handlersCollection[DEFAULT_HANDLER] || noop();
+		const {target} = event;
+		const {tagName} = target;
+		const handler = handlersCollection[tagName] || handlersCollection[DEFAULT_HANDLER] || noop();
+
+		console.log(444, tagName, event.type, event);
+
 		return handler.call(this, event, ...args);
 	}
 }
 
 function createDefaultHandler(handlerName) {
 	return function({target}) {
-		let {events = {}} = target;
-		let handler = events[handlerName];
+		const {events = {}} = target;
+		const handler = events[handlerName];
 
 		if (typeof(handler) === 'function') {
 			handler.apply(this, arguments);
