@@ -1,5 +1,4 @@
 import assign from 'object-assign';
-import {Promise} from 'es6-promise';
 
 export default class Stream {
 	constructor(options = {}) {

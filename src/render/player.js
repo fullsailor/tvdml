@@ -1,5 +1,4 @@
 import assign from 'object-assign';
-import {Promise} from 'es6-promise';
 
 import {noop} from '../utils';
 
@@ -51,8 +50,8 @@ export default function createPlayer(player, options) {
 			player.addEventListener('timeDidChange', timeDidChange.bind(this, payload), {interval: 1});
 			player.addEventListener('stateDidChange', stateDidChange.bind(this, payload));
 
-			// Overriding `addEventListener` and `removeEventListener` methods to resolve issue 
-			// with single `shouldHandleStateChange` event listener. With this proxies we can have 
+			// Overriding `addEventListener` and `removeEventListener` methods to resolve issue
+			// with single `shouldHandleStateChange` event listener. With this proxies we can have
 			// our internal handler and user handler simultaneous.
 			player.addEventListener = function TVDMLWrapper(eventName, listener) {
 				if (eventName === 'shouldHandleStateChange') {
@@ -80,9 +79,9 @@ export default function createPlayer(player, options) {
 
 function updatePlaylist(payload) {
 	let {
-		player, 
+		player,
 		options: {
-			items, 
+			items,
 			uidResolver,
 		},
 	} = payload;
@@ -186,7 +185,7 @@ function stateDidChange(payload, event) {
 		markAsStopped(item, elapsedTime);
 	}
 
-	// Feture detecting `currentMediaItemDuration` if there is no such property in player instance 
+	// Feture detecting `currentMediaItemDuration` if there is no such property in player instance
 	// then app is running under tvOS 9 and we need to use workaround to get current video duration.
 	if (!('currentMediaItemDuration' in player) && event.state === 'playing') {
 		player.pause();
@@ -197,8 +196,8 @@ function shouldHandleStateChange(ctx, payload, event) {
 	let {player} = payload;
 	let {userHandler} = ctx;
 
-	// If there is no `currentMediaItemDuration` property in player then this handler was called 
-	// only to retrieve duration. 
+	// If there is no `currentMediaItemDuration` property in player then this handler was called
+	// only to retrieve duration.
 	// Filling propperty and skipping state change.
 	if (!('currentMediaItemDuration' in player)) {
 		player.currentMediaItemDuration = event.duration;
