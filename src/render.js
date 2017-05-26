@@ -1,4 +1,4 @@
-import assign from 'object-assign';
+const { assign } = Object;
 import {broadcast} from './event-bus';
 import {promisedTimeout} from './utils';
 import {passthrough, createPipeline} from './pipelines';

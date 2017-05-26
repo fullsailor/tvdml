@@ -1,5 +1,4 @@
-import assign from 'object-assign';
-
+const { assign } = Object;
 export default class Stream {
 	constructor(options = {}) {
 		assign(this, options.extend);

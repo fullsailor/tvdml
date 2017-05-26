@@ -1,4 +1,4 @@
-import assign from 'object-assign';
+const { assign } = Object;
 import {noop} from './utils';
 
 import Stream from './pipelines/stream';

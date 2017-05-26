@@ -1,4 +1,4 @@
-import assign from 'object-assign';
+const { assign } = Object;
 
 import diff from 'virtual-dom/diff';
 import patch from 'virtual-dom/patch';
